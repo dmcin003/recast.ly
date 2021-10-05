@@ -7,7 +7,17 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {videos: exampleVideoData};
+    this.state = {videos: exampleVideoData,
+      currentVideo: exampleVideoData[1]};
+
+    this.onClickHandler = this.onClickHandler.bind(this);
+  }
+
+  onClickHandler(selectedVideo) {
+    //we do the work to change state of current video here
+    //set state of current video to new video;
+    console.log('our click function is working!');
+    this.setState({ currentVideo: selectedVideo });
   }
 
 
@@ -22,12 +32,12 @@ class App extends React.Component {
       <div className="row">
         <div className="col-md-7">
           <VideoPlayer video = {
-            this.state.videos[1]
+            this.state.currentVideo
           }
           />
         </div>
         <div className="col-md-5">
-          <VideoList videos={this.state.videos}/>
+          <VideoList click ={this.onClickHandler} videos={this.state.videos}/>
         </div>
       </div>
     </div>);
