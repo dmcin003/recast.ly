@@ -6,11 +6,40 @@ import exampleVideoData from '../data/exampleVideoData.js';
 class App extends React.Component {
   constructor(props) {
     super(props);
-
+    console.log('constructor props: ', props);
     this.state = {videos: exampleVideoData,
-      currentVideo: exampleVideoData[1]};
+      currentVideo: exampleVideoData[1],
+      searchEntry: ''};
 
     this.onClickHandler = this.onClickHandler.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handleSearchClick = this.handleSearchClick.bind(this);
+    this.getYoutubeVideos = this.getYoutubeVideos.bind(this);
+  }
+
+  componentDidMount() {
+    this.getYoutubeVideos('cats');
+
+  }
+
+  handleSearchChange(event) {
+    var searchInput = event.target.value;
+
+    this.setState({searchEntry: searchInput});
+
+  }
+
+  handleSearchClick(event) {
+    console.log(this.state.searchEntry);
+    this.getYoutubeVideos(this.state.searchEntry);
+  }
+
+  getYoutubeVideos(query) {
+
+    this.props.searchYoutube(query, (video)=>{
+      console.log(video);
+      this.setState({videos: video, currentVideo: video[0]});
+    });
   }
 
   onClickHandler(selectedVideo) {
@@ -26,7 +55,7 @@ class App extends React.Component {
     return (<div>
       <nav className="navbar">
         <div className="col-md-6 offset-md-3">
-          <Search />
+          <Search change={this.handleSearchChange} click={this.handleSearchClick}/>
         </div>
       </nav>
       <div className="row">
